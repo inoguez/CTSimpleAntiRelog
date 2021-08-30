@@ -22,22 +22,21 @@ public class CustomDeathMessages implements Listener {
     }
     
     @EventHandler
-    public void onDeath(final PlayerDeathEvent e) {
+    public void onDeath(PlayerDeathEvent e) {
         if (this.plugin.getConfig().getBoolean("Custom-death-messages.Enable")) {
             e.setDeathMessage(null);
-            final LivingEntity entity = e.getEntity();
-            final Player player = entity.getKiller();
-            final EntityDamageEvent damageCause = entity.getLastDamageCause();
-            final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)damageCause;
-            if (entityDamageByEntityEvent != null) {
-                final String killer = entityDamageByEntityEvent.getDamager().getName();
+            LivingEntity entity = e.getEntity();
+            Player player = entity.getKiller();
+            EntityDamageEvent damageCause = entity.getLastDamageCause();
+            if (damageCause instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) damageCause;
+                String killer = entityDamageByEntityEvent.getDamager().getName();
                 if (player != null) {
-                    final ItemStack weap = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
-                    final double dist = entity.getLocation().distance(player.getLocation());
+                    ItemStack weap = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
+                    double dist = entity.getLocation().distance(player.getLocation());
                     if (weap.hasItemMeta()) {
                         Bukkit.broadcastMessage(Bar.format(player.getName() + " &ckilled: &f" + entity.getName() + " &cwith: " + Objects.requireNonNull(weap.getItemMeta()).getDisplayName() + " &cat: &f" + Math.round(dist) + " mts."));
-                    }
-                    else {
+                    } else {
                         if (weap.getType().equals(Material.AIR)) {
                             Bukkit.broadcastMessage(Bar.format(player.getName() + " &ckilled: &f" + entity.getName() + " &cwith: &bHIS HANDS &cat: &f" + Math.round(dist) + " mts."));
                             return;
@@ -47,16 +46,16 @@ public class CustomDeathMessages implements Listener {
                     return;
                 }
                 if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
-                    final Arrow arrow = (Arrow)entityDamageByEntityEvent.getDamager();
+                    Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
                     if (arrow.getShooter() instanceof Skeleton) {
                         Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied at the hands of: &fSkeleton"));
                         return;
                     }
                 }
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied at the hands of: &f" + killer));
-            }
-            else {
-                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied leaving pvp"));
+            }else{
+                assert damageCause != null;
+                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied because of: &f" + damageCause.getCause()));
             }
         }
     }
