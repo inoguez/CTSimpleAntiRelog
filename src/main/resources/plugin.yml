@@ -1,0 +1,10 @@
+name: CTSimpleAntiRelog
+version: '${project.version}'
+main: net.crafttorch.ctsimpleantirelog.AR
+api-version: 1.17
+authors: [ 2GramsIn ]
+description: Anti Combat Relog System for minecraft
+commands:
+  sar:
+    usage: /<command> reload
+    description: Reload SAR Config

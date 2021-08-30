@@ -1,0 +1,14 @@
+Anti-relog:
+  Enable: true
+  Bar-Color: RED
+  Bar-Style: SOLID
+  Attack-Anti-Relog: true
+  Defender-Anti-Relog: true
+  Time: 30
+  Anti-Relog-Message:
+    - '&6====================================================='
+    - '                         &4You have taken damage'
+    - '                 &4do not disconnect until the time is up'
+    - '&6====================================================='
+Custom-death-messages:
+  Enable: true
