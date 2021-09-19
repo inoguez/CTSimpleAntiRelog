@@ -24,7 +24,7 @@ public class CustomDeathMessages implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         if (!plugin.getConfig().getBoolean("Custom-death-messages.Enable")) return;
-        if (Objects.equals(plugin.getConfig().getString("Language"), "English")) {
+        if (Objects.equals(plugin.getConfig().getString("Custom-death-messages.Language"), "English")) {
             e.setDeathMessage(null);
             LivingEntity entity = e.getEntity();
             Player player = entity.getKiller();
@@ -55,10 +55,13 @@ public class CustomDeathMessages implements Listener {
                 }
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied at the hands of: &f" + killer));
             } else {
-                assert damageCause != null;
-                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied because of: &f" + damageCause.getCause()));
+                if (damageCause != null){
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied because of: &f" + damageCause.getCause()));
+                }else{
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied from disconnecting in PvP"));
+                }
             }
-        }else if(Objects.equals(plugin.getConfig().getString("Language"), "Español")) {
+        }else if(Objects.equals(plugin.getConfig().getString("Custom-death-messages.Language"), "Español")) {
             e.setDeathMessage(null);
             LivingEntity entity = e.getEntity();
             Player player = entity.getKiller();
@@ -89,10 +92,13 @@ public class CustomDeathMessages implements Listener {
                 }
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a manos de: &f" + killer));
             } else {
-                assert damageCause != null;
-                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a causa de: &f" + damageCause.getCause()));
+                if (damageCause != null){
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a causa de: &f" + damageCause.getCause()));
+                }else{
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cMurió por desconectarse en PvP"));
+                }
             }
-        }else if(Objects.equals(plugin.getConfig().getString("Language"), "Portugues")){
+        }else if(Objects.equals(plugin.getConfig().getString("Custom-death-messages.Language"), "Portugues")){
             e.setDeathMessage(null);
             LivingEntity entity = e.getEntity();
             Player player = entity.getKiller();
@@ -123,8 +129,11 @@ public class CustomDeathMessages implements Listener {
                 }
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu nas mãos de: &f" + killer));
             } else {
-                assert damageCause != null;
-                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu por causa de: &f" + damageCause.getCause()));
+                if (damageCause != null){
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu por causa de: &f" + damageCause.getCause()));
+                }else{
+                    Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cMorreu por desconexão em PvP"));
+                }
             }
         }
     }

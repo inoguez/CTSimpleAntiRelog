@@ -11,4 +11,5 @@ Anti-relog:
     - '                 &4do not disconnect until the time is up'
     - '&6====================================================='
 Custom-death-messages:
+  Language: Español
   Enable: true

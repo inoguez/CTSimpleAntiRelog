@@ -1,7 +1,7 @@
 name: CTSimpleAntiRelog
 version: '${project.version}'
 main: net.crafttorch.ctsimpleantirelog.AR
-api-version: 1.17
+api-version: 1.13
 authors: [ 2GramsIn ]
 description: Anti Combat Relog System for minecraft
 commands:
