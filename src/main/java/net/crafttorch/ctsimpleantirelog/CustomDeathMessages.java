@@ -23,7 +23,8 @@ public class CustomDeathMessages implements Listener {
     
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        if (this.plugin.getConfig().getBoolean("Custom-death-messages.Enable")) {
+        if (!plugin.getConfig().getBoolean("Custom-death-messages.Enable")) return;
+        if (Objects.equals(plugin.getConfig().getString("Language"), "English")) {
             e.setDeathMessage(null);
             LivingEntity entity = e.getEntity();
             Player player = entity.getKiller();
@@ -53,10 +54,79 @@ public class CustomDeathMessages implements Listener {
                     }
                 }
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied at the hands of: &f" + killer));
-            }else{
+            } else {
                 assert damageCause != null;
                 Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cdied because of: &f" + damageCause.getCause()));
             }
+        }else if(Objects.equals(plugin.getConfig().getString("Language"), "Español")) {
+            e.setDeathMessage(null);
+            LivingEntity entity = e.getEntity();
+            Player player = entity.getKiller();
+            EntityDamageEvent damageCause = entity.getLastDamageCause();
+            if (damageCause instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) damageCause;
+                String killer = entityDamageByEntityEvent.getDamager().getName();
+                if (player != null) {
+                    ItemStack weap = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
+                    double dist = entity.getLocation().distance(player.getLocation());
+                    if (weap.hasItemMeta()) {
+                        Bukkit.broadcastMessage(Bar.format(player.getName() + " &casesinó a: &f" + entity.getName() + " &ccon: " + Objects.requireNonNull(weap.getItemMeta()).getDisplayName() + " &ca: &f" + Math.round(dist) + " mts."));
+                    } else {
+                        if (weap.getType().equals(Material.AIR)) {
+                            Bukkit.broadcastMessage(Bar.format(player.getName() + " &casesinó a: &f" + entity.getName() + " &ccon: &bSus propias manos &ca: &f" + Math.round(dist) + " mts."));
+                            return;
+                        }
+                        Bukkit.broadcastMessage(Bar.format(player.getName() + " &casesinó a: &f" + entity.getName() + " &ccon: &b" + weap.getType() + " &ca: &f" + Math.round(dist) + " mts."));
+                    }
+                    return;
+                }
+                if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
+                    Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
+                    if (arrow.getShooter() instanceof Skeleton) {
+                        Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a manos de: &fSkeleton"));
+                        return;
+                    }
+                }
+                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a manos de: &f" + killer));
+            } else {
+                assert damageCause != null;
+                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmurió a causa de: &f" + damageCause.getCause()));
+            }
+        }else if(Objects.equals(plugin.getConfig().getString("Language"), "Portugues")){
+            e.setDeathMessage(null);
+            LivingEntity entity = e.getEntity();
+            Player player = entity.getKiller();
+            EntityDamageEvent damageCause = entity.getLastDamageCause();
+            if (damageCause instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) damageCause;
+                String killer = entityDamageByEntityEvent.getDamager().getName();
+                if (player != null) {
+                    ItemStack weap = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
+                    double dist = entity.getLocation().distance(player.getLocation());
+                    if (weap.hasItemMeta()) {
+                        Bukkit.broadcastMessage(Bar.format(player.getName() + " &cassassinou: &f" + entity.getName() + " &ccom: " + Objects.requireNonNull(weap.getItemMeta()).getDisplayName() + " &ca: &f" + Math.round(dist) + " mts."));
+                    } else {
+                        if (weap.getType().equals(Material.AIR)) {
+                            Bukkit.broadcastMessage(Bar.format(player.getName() + " &cassassinou: &f" + entity.getName() + " &ccom: &bAs próprias mãos &ca: &f" + Math.round(dist) + " mts."));
+                            return;
+                        }
+                        Bukkit.broadcastMessage(Bar.format(player.getName() + " &cassassinou: &f" + entity.getName() + " &ccom: &b" + weap.getType() + " &ca: &f" + Math.round(dist) + " mts."));
+                    }
+                    return;
+                }
+                if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
+                    Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
+                    if (arrow.getShooter() instanceof Skeleton) {
+                        Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu nas mãos de: &fSkeleton"));
+                        return;
+                    }
+                }
+                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu nas mãos de: &f" + killer));
+            } else {
+                assert damageCause != null;
+                Bukkit.broadcastMessage(Bar.format(entity.getName() + " &cmorreu por causa de: &f" + damageCause.getCause()));
+            }
         }
     }
+
 }
